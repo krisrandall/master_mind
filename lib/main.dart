@@ -53,6 +53,22 @@ class MasterMind extends StatelessWidget {
       MMCols.blue,
     ]));
 
+    g.makeGuess( MasterMindColourSet([
+      MMCols.yellow,
+      MMCols.red,
+      MMCols.white,
+      MMCols.black,
+      MMCols.blue,
+    ]));
+
+    g.makeGuess( MasterMindColourSet([
+      MMCols.pink,
+      MMCols.white,
+      MMCols.pink,
+      MMCols.black,
+      MMCols.green,
+    ]));
+
 
     return MasterMindGame(g);
 

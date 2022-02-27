@@ -19,37 +19,42 @@ class MasterMindGame extends StatelessWidget {
     for (var i=0; i<mmGameState.guesses.length; i++) {
       guessRows.add(
         Row(children: [
-          const Expanded(
-            flex: 1,
-            child: Text('Guess index??'),
-          ),
+          const Spacer(),
           Expanded(
             flex: 1,
+            child: Text('Guess ${i+1}', style: TextStyle(color: Colors.black, decoration: TextDecoration.none, fontSize: 30.0, ),),
+          ),
+          Expanded(
+            flex: 2,
             child: Guess(mmGameState.guesses[i]),
           ),
           Expanded(
             flex: 1,
             child: GuessResult(mmGameState.guessResults[i]),
           ),
+          const Spacer(),
         ],)
       );
     }
 
     return Column(children: [
       Row(children: [
+        const Spacer(),
         const Expanded(
           flex: 1,
-          child: Text('Answer'),
+          child: Text('Answer', style: TextStyle(color: Colors.black, decoration: TextDecoration.none, fontSize: 30.0, ),),
         ),
         Expanded(
-          flex: 1,
+          flex: 2,
           child: Answer(mmGameState.answer!),
         ),
         const Expanded(
           flex: 1,
-          child: Text('----------'),
+          child: Text(''),
         ),
+        const Spacer(),
       ],),
+      const SizedBox(height: 40),
       ...guessRows,
     ],);
   }
