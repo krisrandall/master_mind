@@ -30,7 +30,7 @@ class GameCubit extends Cubit<MasterMindGameState> {
       var gotThisRightInRight = false;
       var currentAnswerCol = answer.cols[a];
       for (var g=0; g<guess.cols.length; g++) {
-        if (answer.cols[a]==guess.cols[g]) {
+        if (answer.cols[a]==guess.cols[g] && !gotThisRightInRight) {
           result = MasterMindGuessResult.addRightInRight(result);
           gotThisRightInRight = true;
         }

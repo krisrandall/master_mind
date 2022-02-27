@@ -13,7 +13,7 @@ enum MMCols {
   blue,
 }
 
-List<Color> _masterMindColours = {
+Map<MMCols, Color> _masterMindColours = {
   MMCols.white: Colors.white,
   MMCols.black: Colors.black,
   MMCols.green: Colors.green,
@@ -21,7 +21,7 @@ List<Color> _masterMindColours = {
   MMCols.pink: Colors.pink,
   MMCols.orange: Colors.orange,
   MMCols.blue: Colors.blue,
-} as List<Color>;
+};
 
 class MasterMindSColourSet {
   late List<MMCols> cols;
@@ -30,7 +30,7 @@ class MasterMindSColourSet {
     // check exactly the right number of colours
     assert(_cols.length == NUMBER_OF_COLOUR_SLOTS);
     // check each one of the colours is from the valid masterMindColours
-    for (var i=0; i<cols.length; i++) {
+    for (var i=0; i<_cols.length; i++) {
       var gotForThisOne = false;
       for (var j=0; j<_masterMindColours.length; j++) {
         if (_cols[i]==MMCols.values[j]) gotForThisOne = true;

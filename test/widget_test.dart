@@ -2,6 +2,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:master_mind/bloc/mm_cubit.dart';
 import 'package:master_mind/models/mm_colours.dart';
+import 'package:master_mind/models/mm_guess_result.dart';
+import 'package:master_mind/models/mm_num_slots.dart';
 
 
 var redRedRedBlackWhite = MasterMindSColourSet([
@@ -22,14 +24,43 @@ var wwggp = MasterMindSColourSet([
 
 void main() {
 
-  group('General Master Mind Tests', () {
+  group('General Master Mind Tests:', () {
 
     test('Should throw if check guess before set Answer', () async {
       var gc = GameCubit();
-      expect(() => gc.makeGuess(allRed), throwsA(Exception()));
+      expect( () => gc.makeGuess(allRed), throwsA('No answer set, call setAnswer before calling makeGuess') );
     });
+
+    test('Guess right returns all correct', () {
+      var gc = GameCubit();
+      gc.setAnswer(redRedRedBlackWhite);
+      var guessRes = gc.makeGuess(redRedRedBlackWhite);
+      expect(guessRes, MasterMindGuessResult(rightInRightSpot: NUMBER_OF_COLOUR_SLOTS) );
+    });
+    
+    test('Guess 3 right with all reds as guess', () {
+      var gc = GameCubit();
+      gc.setAnswer(redRedRedBlackWhite);
+      var guessRes = gc.makeGuess(allRed);
+      expect(guessRes, MasterMindGuessResult(rightInRightSpot: 3));
+    });
+
+    test('Guess all wrong', () {
+      var gc = GameCubit();
+      gc.setAnswer(allRed);
+      var guessRes = gc.makeGuess(wwggp);
+      expect(guessRes, MasterMindGuessResult());
+    });
+
+    test('One right in wrong', (){
+      var gc = GameCubit();
+      gc.setAnswer(redRedRedBlackWhite);
+      var guessRes = gc.makeGuess(wwggp);
+      expect(guessRes, MasterMindGuessResult(rightInWrongSpot: 1));
+    });
+
   });
-  
+
 
 /*
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
