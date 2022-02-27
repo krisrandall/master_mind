@@ -26,20 +26,16 @@ class GameCubit extends Cubit<MasterMindGameState> {
   } ) {
     MasterMindGuessResult result = MasterMindGuessResult();
     for (var a=0; a<answer.cols.length; a++) {
-      var gotThisRight = false;
-      var gotThisRightInRight = false;
-      var currentAnswerCol = answer.cols[a];
-      for (var g=0; g<guess.cols.length; g++) {
-        if (answer.cols[a]==guess.cols[g] && !gotThisRightInRight) {
-          result = MasterMindGuessResult.addRightInRight(result);
-          gotThisRightInRight = true;
+      if (guess.cols[a]==answer.cols[a]) {
+        result = MasterMindGuessResult.addRightInRight(result);
+      } else {
+        var gotOneRightInWrong = false;
+        for (var g=0; g<guess.cols.length; g++) {
+          if (answer.cols[a]==guess.cols[g]) gotOneRightInWrong = true;
         }
-        if (currentAnswerCol==guess.cols[g]) {
-          gotThisRight = true;
+        if (gotOneRightInWrong) {
+          result = MasterMindGuessResult.addRightInWrong(result);
         }
-      }
-      if (gotThisRight&&!gotThisRightInRight) {
-        result = MasterMindGuessResult.addRightInWrong(result);
       }
     }
     return result;

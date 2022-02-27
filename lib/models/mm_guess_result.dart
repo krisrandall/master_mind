@@ -8,16 +8,13 @@ class MasterMindGuessResult {
   MasterMindGuessResult( { 
     rightInRightSpot, 
     rightInWrongSpot 
-  }) //: assert ((rightInRightSpot??0)+(rightInWrongSpot??0) <= NUMBER_OF_COLOUR_SLOTS) {
-  {
-    //print('((${rightInRightSpot??0})+(${rightInWrongSpot??0}) <= $NUMBER_OF_COLOUR_SLOTS)');
+  }) : assert ((rightInRightSpot??0)+(rightInWrongSpot??0) <= NUMBER_OF_COLOUR_SLOTS) {
     this.rightInRightSpot = rightInRightSpot ?? 0;
     this.rightInWrongSpot = rightInWrongSpot ?? 0;
   }
 
   // factory constructor that returns a new instance 
   factory MasterMindGuessResult.addRightInRight(MasterMindGuessResult? _existing) {
-    //print('addRightInRight');
     _existing ??= MasterMindGuessResult();
     return MasterMindGuessResult(
       rightInRightSpot: _existing.rightInRightSpot + 1,
@@ -25,7 +22,6 @@ class MasterMindGuessResult {
     );
   }
   factory MasterMindGuessResult.addRightInWrong(MasterMindGuessResult? _existing) {
-    //print('addRightInWrong');
     _existing ??= MasterMindGuessResult();
     return MasterMindGuessResult(
       rightInRightSpot: _existing.rightInRightSpot,
