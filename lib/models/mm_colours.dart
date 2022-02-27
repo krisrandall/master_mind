@@ -20,5 +20,13 @@ class MasterMindColourSet {
     cols = _cols;
   }
   
-  //int get length => cols.length;  // cool idea, but also misleading, makes this class seem like the list
-} 
+  @override
+  toString() {
+    var string = "  ";
+    for (var i=0; i<cols.length; i++) {
+      string += " ${cols[i].toString()},";
+    }
+    return string;
+  }
+
+}

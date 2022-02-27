@@ -1,8 +1,5 @@
 
-
-
-import 'package:master_mind/models/mm_colours.dart';
-
+import 'mm_colours.dart';
 import 'mm_guess_result.dart';
 import 'mm_num_slots.dart';
 
@@ -52,5 +49,15 @@ class MasterMindGameState {
     }
     return result;
   }
+
+  @override 
+  toString() {
+    var string = " Answer : ${answer.toString()} \n";
+    for (var i=0; i<guesses.length; i++) {
+      string += "  Guess $i : ${guesses[i]} -- ${guessResults[i]} \n";
+    }
+    return string;
+  }
+
 
 }

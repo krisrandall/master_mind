@@ -38,4 +38,6 @@ class Guess extends StatelessWidget {
     List<_BigCircle> pegs = guess.cols.map((c) => _BigCircle(c)).toList();
     return Row(children: pegs);
   }
+
+  List<MMCols> get pegs =>  guess.cols;
 }
