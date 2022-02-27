@@ -15,5 +15,4 @@ class GameCubit extends Cubit<MasterMindGameState> {
     return state.makeGuess(_guess);
   }
 
-
 }

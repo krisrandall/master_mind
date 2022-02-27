@@ -43,14 +43,14 @@ void main() {
       var gc = GameCubit();
       gc.setAnswer(redRedRedBlackWhite);
       var guessRes = gc.makeGuess(redRedRedBlackWhite);
-      expect(guessRes, MasterMindGuessResult(rightInRightSpot: NUMBER_OF_COLOUR_SLOTS) );
+      expect(guessRes, MasterMindGuessResult(rightInRight: NUMBER_OF_COLOUR_SLOTS) );
     });
     
     test('Guess 3 right with all reds as guess', () {
       var gc = GameCubit();
       gc.setAnswer(redRedRedBlackWhite);
       var guessRes = gc.makeGuess(allRed);
-      expect(guessRes, MasterMindGuessResult(rightInRightSpot: 3));
+      expect(guessRes, MasterMindGuessResult(rightInRight: 3));
     });
 
     test('Guess all wrong', () {
@@ -64,14 +64,14 @@ void main() {
       var gc = GameCubit();
       gc.setAnswer(redRedRedBlackWhite);
       var guessRes = gc.makeGuess(wwggp);
-      expect(guessRes, MasterMindGuessResult(rightInWrongSpot: 1));
+      expect(guessRes, MasterMindGuessResult(rightInWrong: 1));
     });
 
     test('Another right in wrong', (){
       var gc = GameCubit();
       gc.setAnswer(wwggp);
       var guessRes = gc.makeGuess(redRedRedBlackWhite);
-      expect(guessRes, MasterMindGuessResult(rightInWrongSpot: 1));
+      expect(guessRes, MasterMindGuessResult(rightInWrong: 1));
     });
 
 
@@ -79,14 +79,14 @@ void main() {
       var gc = GameCubit();
       gc.setAnswer(yyggr);
       var guessRes = gc.makeGuess(redRedRedBlackWhite);
-      expect(guessRes, MasterMindGuessResult(rightInWrongSpot: 1));
+      expect(guessRes, MasterMindGuessResult(rightInWrong: 1));
     });
 
     test('One right in wrong - with multiple in answer', (){
       var gc = GameCubit();
       gc.setAnswer(redRedRedBlackWhite);
       var guessRes = gc.makeGuess(yyggr);
-      expect(guessRes, MasterMindGuessResult(rightInWrongSpot: 1));
+      expect(guessRes, MasterMindGuessResult(rightInWrong: 1));
     });
 
     test('Specific case that was wrong - should be 2 right of each', () {
@@ -107,12 +107,9 @@ void main() {
         MMCols.blue,
       ]));
 
-      expect(g.guessResults[0], MasterMindGuessResult(rightInWrongSpot: 3, rightInRightSpot: 2));
+      expect(g.guessResults[0], MasterMindGuessResult(rightInWrong: 2, rightInRight: 2));
     });
 
-    test('i just fucking realised I dont know how tests work', () {
-      expect(MasterMindGuessResult(rightInWrongSpot: 1), MasterMindGuessResult(rightInWrongSpot: 3));
-    });
 
   });
 

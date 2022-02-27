@@ -6,26 +6,26 @@ class MasterMindGuessResult {
   late int rightInRightSpot;
 
   MasterMindGuessResult( { 
-    rightInRightSpot, 
-    rightInWrongSpot 
-  }) : assert ((rightInRightSpot??0)+(rightInWrongSpot??0) <= NUMBER_OF_COLOUR_SLOTS) {
-    this.rightInRightSpot = rightInRightSpot ?? 0;
-    this.rightInWrongSpot = rightInWrongSpot ?? 0;
+    rightInRight, 
+    rightInWrong, 
+  }) : assert ((rightInRight??0)+(rightInWrong??0) <= NUMBER_OF_COLOUR_SLOTS) {
+    rightInRightSpot = rightInRight ?? 0;
+    rightInWrongSpot = rightInWrong ?? 0;
   }
 
   // factory constructor that returns a new instance 
   factory MasterMindGuessResult.addRightInRight(MasterMindGuessResult? _existing) {
     _existing ??= MasterMindGuessResult();
     return MasterMindGuessResult(
-      rightInRightSpot: _existing.rightInRightSpot + 1,
-      rightInWrongSpot: _existing.rightInWrongSpot,
+      rightInRight: _existing.rightInRightSpot + 1,
+      rightInWrong: _existing.rightInWrongSpot,
     );
   }
   factory MasterMindGuessResult.addRightInWrong(MasterMindGuessResult? _existing) {
     _existing ??= MasterMindGuessResult();
     return MasterMindGuessResult(
-      rightInRightSpot: _existing.rightInRightSpot,
-      rightInWrongSpot: _existing.rightInWrongSpot + 1,
+      rightInRight: _existing.rightInRightSpot,
+      rightInWrong: _existing.rightInWrongSpot + 1,
     );
   }
 
@@ -37,7 +37,7 @@ class MasterMindGuessResult {
     if (other is MasterMindGuessResult && other.runtimeType == runtimeType) {
       if (
         (other.rightInRightSpot == rightInRightSpot) && 
-        (other.rightInRightSpot == rightInRightSpot) 
+        (other.rightInWrongSpot == rightInWrongSpot) 
       ) {
         return true;
       }
