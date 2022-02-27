@@ -39,6 +39,7 @@ class GuessResult extends StatelessWidget {
       ...List.filled(guess.rightInWrongSpot, const _SmallCircle(AnswerResult.white)),
       ...List.filled(remaining, const _SmallCircle(AnswerResult.none)),
     ];
+    print('displaying data for $guess');
     return Row(children: answerCircles);
   }
   

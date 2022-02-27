@@ -11,9 +11,10 @@ class _BigCircle extends StatelessWidget {
     MMCols.black: Colors.black,
     MMCols.green: Colors.green,
     MMCols.red: Colors.red,
-    MMCols.pink: Colors.pink,
+    MMCols.pink: const Color.fromARGB(255, 199, 106, 137),
     MMCols.orange: Colors.orange,
     MMCols.blue: Colors.blue,
+    MMCols.yellow: Colors.yellow,
   };
 
   @override

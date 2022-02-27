@@ -16,7 +16,9 @@ class MasterMindGameState {
     if (answer==null) throw("No answer set, call setAnswer before calling makeGuess");
     guesses.add( _guess );
     // now check the guess
-    guessResults.add( _checkGuess( guess: _guess, answer: answer! ) );
+    MasterMindGuessResult result = _checkGuess( guess: _guess, answer: answer! );
+    guessResults.add( result );
+    return result;
   }
 
   MasterMindGuessResult _checkGuess( { 

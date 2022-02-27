@@ -8,11 +8,11 @@ class GameCubit extends Cubit<MasterMindGameState> {
   GameCubit() : super( MasterMindGameState() );
 
   setAnswer( MasterMindColourSet _answer ) {
-    state.setAnswer(_answer);
+    return state.setAnswer(_answer);
   }
 
   makeGuess( MasterMindColourSet _guess ) {
-    state.makeGuess(_guess);
+    return state.makeGuess(_guess);
   }
 
 

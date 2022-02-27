@@ -4,11 +4,12 @@ import 'mm_num_slots.dart';
 enum MMCols {
   white,
   black,
-  green,
   red,
-  pink,
+  green,
   orange,
   blue,
+  yellow,
+  pink,
 }
 
 class MasterMindColourSet {

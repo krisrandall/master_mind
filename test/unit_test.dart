@@ -2,6 +2,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:master_mind/bloc/mm_cubit.dart';
 import 'package:master_mind/models/mm_colours.dart';
+import 'package:master_mind/models/mm_game_model.dart';
 import 'package:master_mind/models/mm_guess_result.dart';
 import 'package:master_mind/models/mm_num_slots.dart';
 
@@ -21,6 +22,13 @@ var wwggp = MasterMindColourSet([
   MMCols.green, MMCols.green,
   MMCols.pink
 ]);
+
+var yyggr = MasterMindColourSet([
+  MMCols.yellow, MMCols.yellow,
+  MMCols.green, MMCols.green,
+  MMCols.red,
+]);
+
 
 void main() {
 
@@ -57,6 +65,53 @@ void main() {
       gc.setAnswer(redRedRedBlackWhite);
       var guessRes = gc.makeGuess(wwggp);
       expect(guessRes, MasterMindGuessResult(rightInWrongSpot: 1));
+    });
+
+    test('Another right in wrong', (){
+      var gc = GameCubit();
+      gc.setAnswer(wwggp);
+      var guessRes = gc.makeGuess(redRedRedBlackWhite);
+      expect(guessRes, MasterMindGuessResult(rightInWrongSpot: 1));
+    });
+
+
+    test('One right in wrong - with multiple in guess', (){
+      var gc = GameCubit();
+      gc.setAnswer(yyggr);
+      var guessRes = gc.makeGuess(redRedRedBlackWhite);
+      expect(guessRes, MasterMindGuessResult(rightInWrongSpot: 1));
+    });
+
+    test('One right in wrong - with multiple in answer', (){
+      var gc = GameCubit();
+      gc.setAnswer(redRedRedBlackWhite);
+      var guessRes = gc.makeGuess(yyggr);
+      expect(guessRes, MasterMindGuessResult(rightInWrongSpot: 1));
+    });
+
+    test('Specific case that was wrong - should be 2 right of each', () {
+      var g = MasterMindGameState();
+      g.setAnswer( MasterMindColourSet([
+        MMCols.white,
+        MMCols.red,
+        MMCols.green,
+        MMCols.red,
+        MMCols.blue,
+      ]) );
+
+      g.makeGuess( MasterMindColourSet([
+        MMCols.white,
+        MMCols.black,
+        MMCols.red,
+        MMCols.green,
+        MMCols.blue,
+      ]));
+
+      expect(g.guessResults[0], MasterMindGuessResult(rightInWrongSpot: 3, rightInRightSpot: 2));
+    });
+
+    test('i just fucking realised I dont know how tests work', () {
+      expect(MasterMindGuessResult(rightInWrongSpot: 1), MasterMindGuessResult(rightInWrongSpot: 3));
     });
 
   });
