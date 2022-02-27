@@ -6,5 +6,5 @@ import 'guess.dart';
 
 // it's exactly the same as a Guess
 class Answer extends Guess {
-  const Answer(MasterMindSColourSet answer, {Key? key}) : super(answer, key: key);
+  const Answer(MasterMindColourSet answer, {Key? key}) : super(answer, key: key);
 }

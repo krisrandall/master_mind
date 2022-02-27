@@ -8,27 +8,49 @@ import 'guess.dart';
 import 'guess_result.dart';
 
 class MasterMindGame extends StatelessWidget {
-  MasterMindGameState mmGameState;
-  MasterMindGame( this.mmGameState );
+  final MasterMindGameState mmGameState;
+  const MasterMindGame( this.mmGameState, {Key? key} ) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     if (mmGameState.answer==null) return const Text('Answer must be set');
 
-    List<Row> guessRows = mmGameState.guesses.map((e) {
-      return Row(children: [
-        const Text('Guess index??'),
-        Guess(e),
-        const Text('TODO !!'), // GuessResult(e.)
-      ],);
-    }).toList();
+    List<Row>? guessRows = [];
+    for (var i=0; i<mmGameState.guesses.length; i++) {
+      guessRows.add(
+        Row(children: [
+          const Expanded(
+            flex: 1,
+            child: Text('Guess index??'),
+          ),
+          Expanded(
+            flex: 1,
+            child: Guess(mmGameState.guesses[i]),
+          ),
+          Expanded(
+            flex: 1,
+            child: GuessResult(mmGameState.guessResults[i]),
+          ),
+        ],)
+      );
+    }
+
     return Column(children: [
       Row(children: [
-        const Text('Answer'),
-        Answer(mmGameState.answer!),
-        const Text('----------'),
+        const Expanded(
+          flex: 1,
+          child: Text('Answer'),
+        ),
+        Expanded(
+          flex: 1,
+          child: Answer(mmGameState.answer!),
+        ),
+        const Expanded(
+          flex: 1,
+          child: Text('----------'),
+        ),
       ],),
-
+      ...guessRows,
     ],);
   }
 }

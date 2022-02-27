@@ -24,12 +24,13 @@ class _BigCircle extends StatelessWidget {
       decoration: BoxDecoration(
         color: _masterMindColours[pegColour],
         shape: BoxShape.circle,
+        border: Border.all(color: Colors.blueAccent)
       ),);
   }
 }
 
 class Guess extends StatelessWidget {
-  final MasterMindSColourSet guess;
+  final MasterMindColourSet guess;
   const Guess( this.guess, {Key? key} ) : super(key: key);
   @override
   Widget build(BuildContext context) {

@@ -23,6 +23,7 @@ class _SmallCircle extends StatelessWidget {
                (answerResult==AnswerResult.white) ? Colors.white :
                Colors.grey,
         shape: BoxShape.circle,
+        border: Border.all(color: Colors.blueAccent)
       ),);
   }
 }

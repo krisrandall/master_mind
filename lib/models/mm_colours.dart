@@ -11,20 +11,11 @@ enum MMCols {
   blue,
 }
 
-class MasterMindSColourSet {
+class MasterMindColourSet {
   late List<MMCols> cols;
 
-  MasterMindSColourSet(List<MMCols> _cols) {
-    // check exactly the right number of colours
+  MasterMindColourSet(List<MMCols> _cols) {
     assert(_cols.length == NUMBER_OF_COLOUR_SLOTS);
-    // check each one of the colours is from the valid masterMindColours
-    for (var i=0; i<_cols.length; i++) {
-      var gotForThisOne = false;
-      for (var j=0; j<NUMBER_OF_COLOUR_SLOTS; j++) {
-        if (_cols[i]==MMCols.values[j]) gotForThisOne = true;
-      }
-      assert(gotForThisOne);
-    }
     cols = _cols;
   }
   

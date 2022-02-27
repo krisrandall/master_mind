@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:master_mind/bloc/mm_cubit.dart';
+import 'models/mm_colours.dart';
+import 'models/mm_game_model.dart';
+import 'widgets/mm_game.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
   
   @override
   Widget build(BuildContext context) {
@@ -23,14 +23,39 @@ class MyApp extends StatelessWidget {
 }
 
 class MasterMind extends StatelessWidget {
+  const MasterMind({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
 
-    var gc = GameCubit();
-    gc.setAnswer();
+    var g = MasterMindGameState();
+    g.setAnswer( MasterMindColourSet([
+      MMCols.white,
+      MMCols.red,
+      MMCols.green,
+      MMCols.red,
+      MMCols.blue,
+    ]) );
 
-    gc.
+    g.makeGuess( MasterMindColourSet([
+      MMCols.white,
+      MMCols.black,
+      MMCols.red,
+      MMCols.green,
+      MMCols.blue,
+    ]));
+
+    g.makeGuess( MasterMindColourSet([
+      MMCols.orange,
+      MMCols.pink,
+      MMCols.red,
+      MMCols.green,
+      MMCols.blue,
+    ]));
+
+
+    return MasterMindGame(g);
+
   }
 }
 

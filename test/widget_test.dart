@@ -6,17 +6,17 @@ import 'package:master_mind/models/mm_guess_result.dart';
 import 'package:master_mind/models/mm_num_slots.dart';
 
 
-var redRedRedBlackWhite = MasterMindSColourSet([
+var redRedRedBlackWhite = MasterMindColourSet([
   MMCols.red, MMCols.red, MMCols.red,
   MMCols.black,
   MMCols.white,
 ]);
 
-var allRed = MasterMindSColourSet(
+var allRed = MasterMindColourSet(
   List.filled(5, MMCols.red)
 );
 
-var wwggp = MasterMindSColourSet([
+var wwggp = MasterMindColourSet([
   MMCols.white, MMCols.white,
   MMCols.green, MMCols.green,
   MMCols.pink
