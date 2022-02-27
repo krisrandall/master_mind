@@ -20,7 +20,7 @@ import 'models/mm_game_model.dart';
 
 void main() {
 
-  const numGuessesToMake = 3; // can experiment with changing this 
+  const numGuessesToMake = 4; // can experiment with changing this 
 
   var currentGuess = MasterMindColourSet([
     MMCols.values[0],
@@ -38,6 +38,9 @@ void main() {
 
   
   var answerCounter = 0;
+  List<String> guessSetHashes = [];
+  var howManyDuplicateGuessSets = 0;
+
   // Loop through every possible answer
   for (var c1=0; c1<MMCols.values.length; c1++) {
     for (var c2=0; c2<MMCols.values.length; c2++) {
@@ -64,11 +67,24 @@ void main() {
 
             print(game);
 
+
+            // check this guess value already exists
+            var guessHash = game.uniqueHashOfGuesses();
+            for (var i=0; i<guessSetHashes.length; i++) {
+              if (guessSetHashes[i]==guessHash) {
+                //print('    ONE ALREADY EXISTS !!');
+                howManyDuplicateGuessSets++;
+              }
+            }
+            guessSetHashes.add(guessHash);
+
           }
         }
       }
     }
   }
+
+  print('\n\n ** THERE ARE $howManyDuplicateGuessSets DUPLICATES WITH $numGuessesToMake GUESSES ** \n\n');
   
   
 
