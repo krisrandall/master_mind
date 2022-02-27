@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:master_mind/bloc/mm_cubit.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,22 +13,29 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Master Mind',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MasterMind(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+class MasterMind extends StatelessWidget {
+
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  Widget build(BuildContext context) {
+
+    var gc = GameCubit();
+    gc.setAnswer();
+
+    gc.
+  }
 }
 
+
+/*
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
@@ -90,3 +98,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+*/
