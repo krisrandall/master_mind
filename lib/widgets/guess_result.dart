@@ -12,19 +12,25 @@ enum GuessResultValue {
 
 class _SmallCircle extends StatelessWidget {
   final GuessResultValue guessResult;
-  const _SmallCircle( this.guessResult );
+  final Function(GuessResultValue) callback;
+  const _SmallCircle( { required this.guessResult, required this.callback } );
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Container(
-        width: 30.0,
-        height: 30.0,
-        decoration: BoxDecoration(
-          color: (guessResult==GuessResultValue.black) ? Colors.black :
-                (guessResult==GuessResultValue.white) ? Colors.white :
-                Colors.grey,
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.blueAccent)
+      child: GestureDetector(
+        onTap: (){
+          callback( guessResult );
+        },
+        child: Container(
+          width: 30.0,
+          height: 30.0,
+          decoration: BoxDecoration(
+            color: (guessResult==GuessResultValue.black) ? Colors.black :
+                  (guessResult==GuessResultValue.white) ? Colors.white :
+                  Colors.grey,
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.blueAccent)
+          ),
         ),
       ),
     );
@@ -33,14 +39,15 @@ class _SmallCircle extends StatelessWidget {
 
 class GuessResult extends StatelessWidget {
   final MasterMindGuessResult guess;
-  const GuessResult( this.guess, {Key? key} ) : super(key: key);
+  final Function(GuessResultValue) onTap;
+  const GuessResult( { required this.guess, required this.onTap, Key? key} ) : super(key: key);
   @override
   Widget build(BuildContext context) {
     int remaining = NUMBER_OF_COLOUR_SLOTS - guess.rightInRightSpot - guess.rightInWrongSpot;
     List<_SmallCircle> answerCircles = [
-      ...List.filled(guess.rightInRightSpot, const _SmallCircle(GuessResultValue.black)),
-      ...List.filled(guess.rightInWrongSpot, const _SmallCircle(GuessResultValue.white)),
-      ...List.filled(remaining, const _SmallCircle(GuessResultValue.none)),
+      ...List.filled(guess.rightInRightSpot, _SmallCircle(guessResult: GuessResultValue.black, callback: onTap )),
+      ...List.filled(guess.rightInWrongSpot, _SmallCircle(guessResult: GuessResultValue.white, callback: onTap )),
+      ...List.filled(remaining, _SmallCircle(guessResult: GuessResultValue.none, callback: onTap )),
     ];
     //print('displaying data for $guess');
     return Row(children: answerCircles);

@@ -53,8 +53,19 @@ class MasterMindGuesser extends StatelessWidget {
                 child: 
                     (state.activeGuessRows![i]==true) ?
                       (state.guessSet.guessResults.asMap().containsKey(i)) ?  
-                        GuessResult(state.guessSet.guessResults[i]) : 
-                        GuessResult(MasterMindGuessResult()) :
+                        GuessResult(
+                          guess: state.guessSet.guessResults[i], 
+                          onTap: (GuessResultValue g) {
+                            guesserCubit.togglePeg(i, g);
+                          },
+                        ) : 
+                        GuessResult(
+                          guess: MasterMindGuessResult(),
+                          onTap: (GuessResultValue g) {
+                            if (g!=GuessResultValue.none) throw("what!?!  - how can a blank guess result value be anything other than none?!? - this is just a totally random code intergrity check");
+                            guesserCubit.togglePeg(i, GuessResultValue.none);
+                          },
+                        ) :
                       const Text('-'),
               ),
               const Spacer( flex: 1 ),
@@ -68,7 +79,7 @@ class MasterMindGuesser extends StatelessWidget {
             const SizedBox(height: 20),
 
             Padding(
-              padding: EdgeInsets.all(40.0),
+              padding: const EdgeInsets.all(40.0),
               child: (state.possibleAnswers==null) ? 
                     const Instructions() : 
                     (state.possibleAnswers!.length!=1) ?

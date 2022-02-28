@@ -3,9 +3,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/mm_game_model.dart';
-import 'answer.dart';
-import 'guess.dart';
-import 'guess_result.dart';
+
 
 class MasterMindGame extends StatelessWidget {
   final MasterMindGameState mmGameState;
@@ -13,6 +11,9 @@ class MasterMindGame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    return Text('not currently implemented');
+    /*
     if (mmGameState.answer==null) return const Text('Answer must be set');
 
     List<Row>? guessRows = [];
@@ -57,5 +58,7 @@ class MasterMindGame extends StatelessWidget {
       const SizedBox(height: 40),
       ...guessRows,
     ],);
+
+    */
   }
 }

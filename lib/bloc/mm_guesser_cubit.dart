@@ -63,10 +63,14 @@ class GuesserCubit extends Cubit<GuesserState> {
   }
 
   togglePeg( int onWhichRow, GuessResultValue colourOfPegBeingToggled ) {
+    var guessSet = state.guessSet;
+    // if we have not pegs (guessResults) then we are going to make some now 
+    if (guessSet.guessResults.isEmpty) {
+      guessSet.initGuessResultsToBlank();
+    }
     // click on empty peg to add in a RightInRight
     // click on a black (RightInRigtht) to add RightInWrong and remove RightInRight
     // click on a white (RightInWrong) to reove a RightInWrong
-    var guessSet = state.guessSet;
     if (colourOfPegBeingToggled==GuessResultValue.none) {
       guessSet.guessResults[onWhichRow] = MasterMindGuessResult(
         rightInRight: guessSet.guessResults[onWhichRow].rightInRightSpot + 1,

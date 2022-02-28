@@ -11,4 +11,9 @@ class MasterMindGuessSet {
     guessResults,
   }) : guesses = guesses ?? [],
        guessResults = guessResults ?? [];
+
+  /// set the guessResults property to no matches, for all of the guesses 
+  initGuessResultsToBlank() {
+    guessResults = List.filled( guesses.length, MasterMindGuessResult() );
+  }
 }
