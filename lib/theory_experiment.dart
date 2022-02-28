@@ -20,23 +20,43 @@ import 'models/mm_game_model.dart';
 
 void main() {
 
-  const numGuessesToMake = 4; // can experiment with changing this 
+  const numGuessesToMake = 6; // can experiment with changing this 
 
-  var currentGuess = MasterMindColourSet([
-    MMCols.values[0],
-    MMCols.values[1],
-    MMCols.values[2],
-    MMCols.values[3],
-    MMCols.values[4],
-  ]);
+  // ------------------------------------------------------------
 
+
+  var currentGuess = getNextGuess(null);
   List<MasterMindColourSet> guessesSet = [];
   for (var i=0; i<numGuessesToMake; i++) {
     guessesSet.add(currentGuess);
     currentGuess = getNextGuess(currentGuess);
   }
 
+  // ------------------------------------------------------------
+
+
+
+  var compareToGame = MasterMindGameState();
+  compareToGame.setAnswer(MasterMindColourSet([
+      MMCols.red,
+      MMCols.red,
+      MMCols.red,
+      MMCols.yellow,
+      MMCols.pink,
+  ]));
+  for (var i=0; i<guessesSet.length; i++) {
+    compareToGame.makeGuess(guessesSet[i]);
+  }
+  var compareToGuessHash = compareToGame.uniqueHashOfGuesses();
   
+  print("\n\n $compareToGame \n Checking the solution ${compareToGame.answer} , when I made ${guessesSet.length} guesses , for other solutions that would give the same exact result : ");
+
+  var numMatchesToCompare = 0;
+
+
+  // ------------------------------------------------------------
+
+
   var answerCounter = 0;
   List<String> guessSetHashes = [];
   var howManyDuplicateGuessSets = 0;
@@ -65,8 +85,9 @@ void main() {
               game.makeGuess(guessesSet[i]);
             }
 
-            print(game);
+            //print(game);
 
+            /* This code for checking all against all
 
             // check this guess value already exists
             var guessHash = game.uniqueHashOfGuesses();
@@ -78,20 +99,57 @@ void main() {
             }
             guessSetHashes.add(guessHash);
 
+            */
+
+            /* this code for checking current against compareToAnswer */
+            var guessHash = game.uniqueHashOfGuesses();
+            if (guessHash == compareToGuessHash) {
+              numMatchesToCompare++;
+              print('\n  Answer found with matching solution results for $game');
+            }
+
           }
         }
       }
     }
   }
 
-  print('\n\n ** THERE ARE $howManyDuplicateGuessSets DUPLICATES WITH $numGuessesToMake GUESSES ** \n\n');
+  //print('\n\n ** In $answerCounter possible answers, THERE ARE $howManyDuplicateGuessSets DUPLICATES WITH $numGuessesToMake GUESSES ** \n\n');
+  print('\n\n ** In $answerCounter possible answers, there are ${numMatchesToCompare-1} answers that are the same as ${compareToGame.answer} \n\n');
   
-  
-
 }
 
 
-MasterMindColourSet getNextGuess(MasterMindColourSet current) {
+
+MasterMindColourSet getNextGuess(MasterMindColourSet? current) {
+
+  current ??= MasterMindColourSet([
+      MMCols.values[0],
+      MMCols.values[1],
+      MMCols.values[2],
+      MMCols.values[3],
+      MMCols.values[4],
+    ]);
+
+  int getNextIndexAndWrap(int currentIndex) {
+    currentIndex++;
+    if (currentIndex>=MMCols.values.length) currentIndex = 0;
+    return currentIndex;
+  }
+
+  int getIndexOfColEnum(MMCols col) {
+    // I feel like there should be a way to do this in Flutter - but I ain't found it
+    if (col==MMCols.white) return 0;
+    if (col==MMCols.black) return 1;
+    if (col==MMCols.red) return 2;
+    if (col==MMCols.green) return 3;
+    if (col==MMCols.orange) return 4;
+    if (col==MMCols.blue) return 5;
+    if (col==MMCols.yellow) return 6;
+    if (col==MMCols.pink) return 7;
+    throw('somehow your colour $col didn\'t match !!');
+  }
+
   // so - this works by starting counting from the one colour after the last in the current set
   var colourIndex = getIndexOfColEnum(current.cols[current.cols.length-1]);
   colourIndex = getNextIndexAndWrap(colourIndex);
@@ -109,24 +167,9 @@ MasterMindColourSet getNextGuess(MasterMindColourSet current) {
   colourIndex = getNextIndexAndWrap(colourIndex);
 
   return MasterMindColourSet(colours);
+
+  
 }
 
 
-int getNextIndexAndWrap(int currentIndex) {
-  currentIndex++;
-  if (currentIndex>=MMCols.values.length) currentIndex = 0;
-  return currentIndex;
-}
 
-int getIndexOfColEnum(MMCols col) {
-  // I feel like there should be a way to do this in Flutter - but I ain't found it
-  if (col==MMCols.white) return 0;
-  if (col==MMCols.black) return 1;
-  if (col==MMCols.red) return 2;
-  if (col==MMCols.green) return 3;
-  if (col==MMCols.orange) return 4;
-  if (col==MMCols.blue) return 5;
-  if (col==MMCols.yellow) return 6;
-  if (col==MMCols.pink) return 7;
-  throw('somehow your colour $col didn\'t match !!');
-}
