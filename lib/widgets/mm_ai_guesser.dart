@@ -5,8 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/mm_guesser_cubit.dart';
 import '../models/mm_guess_result.dart';
+import 'answer.dart';
 import 'guess.dart';
 import 'guess_result.dart';
+import 'instructions.dart';
 
 class MasterMindGuesser extends StatelessWidget {
   const MasterMindGuesser({Key? key}) : super(key: key);
@@ -52,10 +54,33 @@ class MasterMindGuesser extends StatelessWidget {
           );
         }
 
-
+        
         return Column(children: [
-            const SizedBox(height: 40),
+
+            const SizedBox(height: 20),
+
+            Padding(
+              padding: EdgeInsets.all(40.0),
+              child: (state.possibleAnswers==null) ? 
+                    const Instructions() : 
+                    (state.possibleAnswers!.length!=1) ?
+                      Text("There are ${state.possibleAnswers!.length} possible answers") :
+                      Answer(state.possibleAnswers![0].guess),
+            ),
+
+            const SizedBox(height: 10),
+
             ...guessRows,
+
+            const SizedBox(height: 40),
+
+            OutlinedButton(
+              child: const Text('Check Guess'),
+              onPressed: () {
+                print('about to check the guess!!');
+              },
+            ),
+
         ]);
 
       }
