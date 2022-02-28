@@ -19,14 +19,17 @@ class _BigCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 60.0,
-      height: 60.0,
-      decoration: BoxDecoration(
-        color: _masterMindColours[pegColour],
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.blueAccent)
-      ),);
+    return Expanded(
+      child: Container(
+         width: 60.0,
+         height: 60.0,
+        decoration: BoxDecoration(
+          color: _masterMindColours[pegColour],
+          shape: BoxShape.circle,
+          border: Border.all(color: Colors.blueAccent)
+        ),
+      ),
+    );
   }
 }
 

@@ -15,16 +15,19 @@ class _SmallCircle extends StatelessWidget {
   const _SmallCircle( this.answerResult );
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 30.0,
-      height: 30.0,
-      decoration: BoxDecoration(
-        color: (answerResult==AnswerResult.black) ? Colors.black :
-               (answerResult==AnswerResult.white) ? Colors.white :
-               Colors.grey,
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.blueAccent)
-      ),);
+    return Expanded(
+      child: Container(
+        width: 30.0,
+        height: 30.0,
+        decoration: BoxDecoration(
+          color: (answerResult==AnswerResult.black) ? Colors.black :
+                (answerResult==AnswerResult.white) ? Colors.white :
+                Colors.grey,
+          shape: BoxShape.circle,
+          border: Border.all(color: Colors.blueAccent)
+        ),
+      ),
+    );
   }
 }
 

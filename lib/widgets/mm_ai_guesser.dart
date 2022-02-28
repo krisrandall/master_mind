@@ -8,17 +8,12 @@ import '../models/mm_guess_result.dart';
 import 'guess.dart';
 import 'guess_result.dart';
 
-class MasterMindGuesser extends StatefulWidget {
+class MasterMindGuesser extends StatelessWidget {
   const MasterMindGuesser({Key? key}) : super(key: key);
-  @override
-  State<StatefulWidget> createState() => _MasterMindGuesserState();
-}
 
-class _MasterMindGuesserState extends State<MasterMindGuesser> {
+
   @override
   Widget build(BuildContext context) {
-
-
     return BlocConsumer<GuesserCubit, GuesserState>(
       listener: (context, state) {
         // do some side effect
@@ -30,7 +25,7 @@ class _MasterMindGuesserState extends State<MasterMindGuesser> {
         for (var i=0; i<state.guessSet.guesses.length; i++) {
           guessRows.add(
             Row(children: [
-              const Spacer(),
+              const Spacer( flex: 1 ),
               Checkbox(
                 value: true, //rememberMe,
                 onChanged: (val) {
@@ -38,20 +33,21 @@ class _MasterMindGuesserState extends State<MasterMindGuesser> {
                 },
               ),
               Expanded(
-                flex: 1,
-                child: Text('Guess ${i+1}', style: TextStyle(color: Colors.black, decoration: TextDecoration.none, fontSize: 30.0, ),),
+                flex: 2,
+                child: Text('Guess ${i+1}', style: const TextStyle(color: Colors.black, decoration: TextDecoration.none, fontSize: 12.0, ),),
               ),
               Expanded(
-                flex: 2,
+                flex: 6,
                 child: Guess(state.guessSet.guesses[i]),
               ),
+              const Spacer(),
               Expanded(
-                flex: 1,
+                flex: 3,
                 child: (state.guessSet.guessResults.asMap().containsKey(i)) ?  
                         GuessResult(state.guessSet.guessResults[i]) : 
                         GuessResult(MasterMindGuessResult()),
               ),
-              const Spacer(),
+              const Spacer( flex: 1 ),
             ],)
           );
         }
