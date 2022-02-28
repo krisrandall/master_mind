@@ -16,12 +16,16 @@ class MasterMindGuesser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    var guesserCubit = context.read<GuesserCubit>();
+
     return BlocConsumer<GuesserCubit, GuesserState>(
       listener: (context, state) {
         // do some side effect
       },
       builder: (context, state) {
 
+        print('     building again with $state');
 
         List<Row>? guessRows = [];
         for (var i=0; i<state.guessSet.guesses.length; i++) {
@@ -29,9 +33,10 @@ class MasterMindGuesser extends StatelessWidget {
             Row(children: [
               const Spacer( flex: 1 ),
               Checkbox(
-                value: true, //rememberMe,
+                value: state.activeGuessRows![i]==true,
                 onChanged: (val) {
-                  print(val);
+                  print('row $i is now $val');
+                  guesserCubit.toggleGuessRow(i);
                 },
               ),
               Expanded(
@@ -45,9 +50,12 @@ class MasterMindGuesser extends StatelessWidget {
               const Spacer(),
               Expanded(
                 flex: 3,
-                child: (state.guessSet.guessResults.asMap().containsKey(i)) ?  
+                child: 
+                    (state.activeGuessRows![i]==true) ?
+                      (state.guessSet.guessResults.asMap().containsKey(i)) ?  
                         GuessResult(state.guessSet.guessResults[i]) : 
-                        GuessResult(MasterMindGuessResult()),
+                        GuessResult(MasterMindGuessResult()) :
+                      const Text('-'),
               ),
               const Spacer( flex: 1 ),
             ],)

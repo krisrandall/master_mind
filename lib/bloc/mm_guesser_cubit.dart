@@ -19,13 +19,17 @@ class GuesserState {
     this.possibleAnswers,
     this.activeGuessRows,
   }) {
-    var activeGuessComplete = List.filled( 5, true );
+    var activeGuessComplete = List.filled( guessSet.guesses.length+1, true );
     if (activeGuessRows!=null) {
       for (var i = 0; i < activeGuessRows!.length; i++) {
         activeGuessComplete[i] = activeGuessRows![i];
       }
     }
     activeGuessRows = activeGuessComplete;
+  }
+
+  @override toString() {
+    return " GuesserState ($guessSet), active = $activeGuessRows, possible answers = $possibleAnswers";
   }
 
 }
@@ -49,33 +53,41 @@ class GuesserCubit extends Cubit<GuesserState> {
   }
 
   toggleGuessRow( int rowIndex ) {
-    state.activeGuessRows![rowIndex] = !state.activeGuessRows![rowIndex];
-    emit(state);
+    var activeGuesses = state.activeGuessRows;
+    activeGuesses![rowIndex] = !activeGuesses[rowIndex];
+    emit( GuesserState(
+      guessSet: state.guessSet,
+      possibleAnswers: state.possibleAnswers,
+      activeGuessRows: activeGuesses,
+    ) );
   }
 
   togglePeg( int onWhichRow, GuessResultValue colourOfPegBeingToggled ) {
     // click on empty peg to add in a RightInRight
     // click on a black (RightInRigtht) to add RightInWrong and remove RightInRight
     // click on a white (RightInWrong) to reove a RightInWrong
-    var currentGuessResult = state.guessSet.guessResults[onWhichRow];
+    var guessSet = state.guessSet;
     if (colourOfPegBeingToggled==GuessResultValue.none) {
-      currentGuessResult = MasterMindGuessResult(
-        rightInRight: currentGuessResult.rightInRightSpot + 1,
-        rightInWrong: currentGuessResult.rightInWrongSpot,
+      guessSet.guessResults[onWhichRow] = MasterMindGuessResult(
+        rightInRight: guessSet.guessResults[onWhichRow].rightInRightSpot + 1,
+        rightInWrong: guessSet.guessResults[onWhichRow].rightInWrongSpot,
       );
     } else if (colourOfPegBeingToggled==GuessResultValue.black) {
-        currentGuessResult = MasterMindGuessResult(
-          rightInRight: currentGuessResult.rightInRightSpot - 1,
-          rightInWrong: currentGuessResult.rightInWrongSpot + 1,
+        guessSet.guessResults[onWhichRow] = MasterMindGuessResult(
+          rightInRight: guessSet.guessResults[onWhichRow].rightInRightSpot - 1,
+          rightInWrong: guessSet.guessResults[onWhichRow].rightInWrongSpot + 1,
       );
     } else if (colourOfPegBeingToggled==GuessResultValue.white) {
-      currentGuessResult = MasterMindGuessResult(
-        rightInRight: currentGuessResult.rightInRightSpot,
-        rightInWrong: currentGuessResult.rightInWrongSpot - 1,
+      guessSet.guessResults[onWhichRow] = MasterMindGuessResult(
+        rightInRight: guessSet.guessResults[onWhichRow].rightInRightSpot,
+        rightInWrong: guessSet.guessResults[onWhichRow].rightInWrongSpot - 1,
       );
     }
-    state.guessSet.guessResults[onWhichRow] = currentGuessResult;
-    emit(state);  
+    emit( GuesserState(
+      guessSet: state.guessSet,
+      possibleAnswers: state.possibleAnswers,
+      activeGuessRows: state.activeGuessRows,
+    ) );
   }
 
 
