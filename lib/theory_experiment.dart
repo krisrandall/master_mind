@@ -1,4 +1,5 @@
 
+import 'master_mind_ai.dart';
 import 'models/mm_colours.dart';
 import 'models/mm_game_model.dart';
 
@@ -21,19 +22,11 @@ import 'models/mm_game_model.dart';
 void main() {
 
   const numGuessesToMake = 6; // can experiment with changing this 
+  
+  List<MasterMindColourSet> guessesSet = MasterMindAi.getInitialGuessSet(numGuessesToMake);
+
 
   // ------------------------------------------------------------
-
-
-  var currentGuess = getNextGuess(null);
-  List<MasterMindColourSet> guessesSet = [];
-  for (var i=0; i<numGuessesToMake; i++) {
-    guessesSet.add(currentGuess);
-    currentGuess = getNextGuess(currentGuess);
-  }
-
-  // ------------------------------------------------------------
-
 
 
   var compareToGame = MasterMindGameState();
@@ -49,7 +42,7 @@ void main() {
   }
   var compareToGuessHash = compareToGame.uniqueHashOfGuesses();
   
-  print("\n\n $compareToGame \n Checking the solution ${compareToGame.answer} , when I made ${guessesSet.length} guesses , for other solutions that would give the same exact result : ");
+  print("\n\nChecking the solution ${compareToGame.answer} , when I made ${guessesSet.length} guesses , for other solutions that would give the same exact result : ");
 
   var numMatchesToCompare = 0;
 
@@ -118,58 +111,4 @@ void main() {
   print('\n\n ** In $answerCounter possible answers, there are ${numMatchesToCompare-1} answers that are the same as ${compareToGame.answer} \n\n');
   
 }
-
-
-
-MasterMindColourSet getNextGuess(MasterMindColourSet? current) {
-
-  current ??= MasterMindColourSet([
-      MMCols.values[0],
-      MMCols.values[1],
-      MMCols.values[2],
-      MMCols.values[3],
-      MMCols.values[4],
-    ]);
-
-  int getNextIndexAndWrap(int currentIndex) {
-    currentIndex++;
-    if (currentIndex>=MMCols.values.length) currentIndex = 0;
-    return currentIndex;
-  }
-
-  int getIndexOfColEnum(MMCols col) {
-    // I feel like there should be a way to do this in Flutter - but I ain't found it
-    if (col==MMCols.white) return 0;
-    if (col==MMCols.black) return 1;
-    if (col==MMCols.red) return 2;
-    if (col==MMCols.green) return 3;
-    if (col==MMCols.orange) return 4;
-    if (col==MMCols.blue) return 5;
-    if (col==MMCols.yellow) return 6;
-    if (col==MMCols.pink) return 7;
-    throw('somehow your colour $col didn\'t match !!');
-  }
-
-  // so - this works by starting counting from the one colour after the last in the current set
-  var colourIndex = getIndexOfColEnum(current.cols[current.cols.length-1]);
-  colourIndex = getNextIndexAndWrap(colourIndex);
-
-  List<MMCols> colours = [];
-  colours.add(MMCols.values[colourIndex]);
-  colourIndex = getNextIndexAndWrap(colourIndex);
-  colours.add(MMCols.values[colourIndex]);
-  colourIndex = getNextIndexAndWrap(colourIndex);
-  colours.add(MMCols.values[colourIndex]);
-  colourIndex = getNextIndexAndWrap(colourIndex);
-  colours.add(MMCols.values[colourIndex]);
-  colourIndex = getNextIndexAndWrap(colourIndex);
-  colours.add(MMCols.values[colourIndex]);
-  colourIndex = getNextIndexAndWrap(colourIndex);
-
-  return MasterMindColourSet(colours);
-
-  
-}
-
-
 

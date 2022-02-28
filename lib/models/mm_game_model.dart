@@ -1,24 +1,23 @@
 
 import 'dart:convert';
-
+import 'mm_guess_set.dart';
 import 'mm_colours.dart';
 import 'mm_guess_result.dart';
-import 'mm_num_slots.dart';
- import 'package:crypto/crypto.dart';
+import 'mm_num_slots.dart'; 
+import 'package:crypto/crypto.dart';
  
 class MasterMindGameState {
   MasterMindColourSet? answer;
-  List<MasterMindColourSet> guesses = [];
-  List<MasterMindGuessResult> guessResults = [];
+  MasterMindGuessSet guessSet = MasterMindGuessSet();
 
   setAnswer( MasterMindColourSet a ) { answer = a; }
 
   makeGuess( MasterMindColourSet _guess ) {
     if (answer==null) throw("No answer set, call setAnswer before calling makeGuess");
-    guesses.add( _guess );
+    guessSet.guesses.add( _guess );
     // now check the guess
     MasterMindGuessResult result = _checkGuess( guess: _guess, answer: answer! );
-    guessResults.add( result );
+    guessSet.guessResults.add( result );
     return result;
   }
 
@@ -64,8 +63,8 @@ class MasterMindGameState {
 
   String guessesString() {
     var string = '';
-    for (var i=0; i<guesses.length; i++) {
-      string += "  Guess $i : ${guesses[i]} -- ${guessResults[i]} \n";
+    for (var i=0; i<guessSet.guesses.length; i++) {
+      string += "  Guess $i : ${guessSet.guesses[i]} -- ${guessSet.guessResults[i]} \n";
     }
     return string;
   }

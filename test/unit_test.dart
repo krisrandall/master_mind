@@ -107,7 +107,7 @@ void main() {
         MMCols.blue,
       ]));
 
-      expect(g.guessResults[0], MasterMindGuessResult(rightInWrong: 2, rightInRight: 2));
+      expect(g.guessSet.guessResults[0], MasterMindGuessResult(rightInWrong: 2, rightInRight: 2));
     });
 
 

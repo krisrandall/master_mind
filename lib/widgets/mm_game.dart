@@ -16,21 +16,21 @@ class MasterMindGame extends StatelessWidget {
     if (mmGameState.answer==null) return const Text('Answer must be set');
 
     List<Row>? guessRows = [];
-    for (var i=0; i<mmGameState.guesses.length; i++) {
+    for (var i=0; i<mmGameState.guessSet.guesses.length; i++) {
       guessRows.add(
         Row(children: [
           const Spacer(),
           Expanded(
             flex: 1,
-            child: Text('Guess ${i+1}', style: TextStyle(color: Colors.black, decoration: TextDecoration.none, fontSize: 30.0, ),),
+            child: Text('Guess ${i+1}', style: const TextStyle(color: Colors.black, decoration: TextDecoration.none, fontSize: 30.0, ),),
           ),
           Expanded(
             flex: 2,
-            child: Guess(mmGameState.guesses[i]),
+            child: Guess(mmGameState.guessSet.guesses[i]),
           ),
           Expanded(
             flex: 1,
-            child: GuessResult(mmGameState.guessResults[i]),
+            child: GuessResult(mmGameState.guessSet.guessResults[i]),
           ),
           const Spacer(),
         ],)
