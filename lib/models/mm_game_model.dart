@@ -1,10 +1,10 @@
 
-import 'dart:convert';
+
 import 'mm_guess_set.dart';
 import 'mm_colours.dart';
 import 'mm_guess_result.dart';
 import 'mm_num_slots.dart'; 
-import 'package:crypto/crypto.dart';
+
  
 class MasterMindGameState {
   MasterMindColourSet? answer;
@@ -61,18 +61,9 @@ class MasterMindGameState {
     return " Answer : ${answer.toString()} \n";
   }
 
-  String guessesString() {
-    var string = '';
-    for (var i=0; i<guessSet.guesses.length; i++) {
-      string += "  Guess $i : ${guessSet.guesses[i]} -- ${guessSet.guessResults[i]} \n";
-    }
-    return string;
-  }
+  String guessesString() => guessSet.guessesString();
 
-  String uniqueHashOfGuesses() {
-    var bytes1 = utf8.encode(guessesString());
-    return sha256.convert(bytes1).toString();
-  }
+  String uniqueHashOfGuesses() => guessSet.uniqueHashOfGuesses();
 
 
 }

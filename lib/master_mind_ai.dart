@@ -3,8 +3,61 @@
 // it's a brute force test of the theory I'm working on developing
 
 import 'models/mm_colours.dart';
+import 'models/mm_game_model.dart';
+import 'models/mm_guess_set.dart';
 
 class MasterMindAi {
+
+  // would be nice if this were async .. but not a priority right now .. 
+  static List<MasterMindColourSet> fetchAllMatchingAnswers( MasterMindGuessSet guessSet ) {
+
+    const quitOutAt = 10000000000;
+
+    var hashOfGuessSet = guessSet.uniqueHashOfGuesses();
+    List<MasterMindColourSet> matchingAnswers = [];
+
+    // Loop through every possible answer
+    outerloop:
+    for (var c1=0; c1<MMCols.values.length; c1++) {
+      for (var c2=0; c2<MMCols.values.length; c2++) {
+        for (var c3=0; c3<MMCols.values.length; c3++) {
+          for (var c4=0; c4<MMCols.values.length; c4++) {
+            for (var c5=0; c5<MMCols.values.length; c5++) {
+
+              var answerToTry = MasterMindColourSet([
+                MMCols.values[c1],
+                MMCols.values[c2],
+                MMCols.values[c3],
+                MMCols.values[c4],
+                MMCols.values[c5],
+              ]);
+
+              var game = MasterMindGameState();
+              game.setAnswer(answerToTry);
+
+              for (var i=0; i<guessSet.guesses.length; i++) {
+                game.makeGuess(guessSet.guesses[i]);
+              }
+
+              // Do the guess results for this answer match the guess results we passed in?
+              var guessHash = game.uniqueHashOfGuesses();
+              if (guessHash == hashOfGuessSet) {
+                matchingAnswers.add(game.answer!);
+              }
+
+              if (matchingAnswers.length>quitOutAt) {
+                break outerloop;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return matchingAnswers;
+  }
+  
+
 
   /// based on the number of guesses involved, 
   static List<MasterMindColourSet> getInitialGuessSet(int numGuesses) {

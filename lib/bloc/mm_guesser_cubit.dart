@@ -2,24 +2,26 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:master_mind/models/mm_guess_set.dart';
 
+import '../master_mind_ai.dart';
 import '../models/mm_colours.dart';
 import '../models/mm_guess_result.dart';
-import '../widgets/answer.dart';
 import '../widgets/guess_result.dart';
 
 
 class GuesserState {
   
   MasterMindGuessSet guessSet;
-  List<Answer>? possibleAnswers;
+  List<MasterMindColourSet>? possibleAnswers;
   List<bool>? activeGuessRows;
+  bool? checkingAnswers = false;
 
   GuesserState( {
     required this.guessSet,
     this.possibleAnswers,
     this.activeGuessRows,
+    this.checkingAnswers,
   }) {
-    var activeGuessComplete = List.filled( guessSet.guesses.length+1, true );
+    var activeGuessComplete = List.filled( guessSet.guesses.length, true );
     if (activeGuessRows!=null) {
       for (var i = 0; i < activeGuessRows!.length; i++) {
         activeGuessComplete[i] = activeGuessRows![i];
@@ -41,16 +43,49 @@ class GuesserCubit extends Cubit<GuesserState> {
     super( GuesserState(guessSet: MasterMindGuessSet( guesses: _initial ) ) );
 
 
-  void checkGuesses( MasterMindGuessSet guessSet ) {
-    // Now check for how many possible answers there are
-    List<Answer>? possibleAnswers; // TODO !!
+  void checkGuesses() {
 
     emit( GuesserState(
-      guessSet: guessSet,
-      possibleAnswers: possibleAnswers,
+      guessSet: state.guessSet,
+      possibleAnswers: state.possibleAnswers,
       activeGuessRows: state.activeGuessRows,
+      checkingAnswers: true,
     ) );
+
+    // wrap in future delayed to try to get the UI to update with the above emit
+    Future.delayed(const Duration(milliseconds: 500), () {
+
+      if (state.guessSet.guessResults.isEmpty) { // clearly not the best spot to do it, but a hacky fix
+        state.guessSet.initGuessResultsToBlank();
+      }
+          
+      Future<List<MasterMindColourSet>> fetchTheAnswers() async {
+        return Future( () {
+          MasterMindGuessSet? guessSet = MasterMindGuessSet();
+
+          for (var i=0; i<state.guessSet.guesses.length; i++) {
+            if (state.activeGuessRows![i]) {
+              guessSet.guesses.add( state.guessSet.guesses[i] );
+              guessSet.guessResults.add( state.guessSet.guessResults[i] );
+            }
+          }
+          // Now check for how many possible answers there are
+          return MasterMindAi.fetchAllMatchingAnswers(guessSet);
+        });
+      }
+
+      fetchTheAnswers().then((possibleAnswers) {
+        emit( GuesserState(
+          guessSet: state.guessSet,
+          possibleAnswers: possibleAnswers,
+          activeGuessRows: state.activeGuessRows,
+          checkingAnswers: false,
+        ) );
+      });
+    });
+
   }
+
 
   toggleGuessRow( int rowIndex ) {
     var activeGuesses = state.activeGuessRows;

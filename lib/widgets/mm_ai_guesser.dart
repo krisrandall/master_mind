@@ -25,8 +25,6 @@ class MasterMindGuesser extends StatelessWidget {
       },
       builder: (context, state) {
 
-        print('     building again with $state');
-
         List<Row>? guessRows = [];
         for (var i=0; i<state.guessSet.guesses.length; i++) {
           guessRows.add(
@@ -35,7 +33,6 @@ class MasterMindGuesser extends StatelessWidget {
               Checkbox(
                 value: state.activeGuessRows![i]==true,
                 onChanged: (val) {
-                  print('row $i is now $val');
                   guesserCubit.toggleGuessRow(i);
                 },
               ),
@@ -73,18 +70,25 @@ class MasterMindGuesser extends StatelessWidget {
           );
         }
 
+
         
         return Column(children: [
 
             const SizedBox(height: 20),
 
-            Padding(
-              padding: const EdgeInsets.all(40.0),
-              child: (state.possibleAnswers==null) ? 
-                    const Instructions() : 
-                    (state.possibleAnswers!.length!=1) ?
-                      Text("There are ${state.possibleAnswers!.length} possible answers") :
-                      Answer(state.possibleAnswers![0].guess),
+            Expanded(
+              flex: 1,
+              child: Padding(
+                  padding: const EdgeInsets.all(40.0),
+                  child: 
+                      (state.checkingAnswers==true) ?
+                        const Text('Checking answers...', style: TextStyle(color: Colors.black, decoration: TextDecoration.none, fontSize: 20.0, ),) :
+                        (state.possibleAnswers==null) ? 
+                          const Instructions() : 
+                          (state.possibleAnswers!.length!=1) ?
+                            Text("There are ${state.possibleAnswers!.length} possible answers") :
+                            Answer(state.possibleAnswers![0]),
+                ),
             ),
 
             const SizedBox(height: 10),
@@ -96,9 +100,15 @@ class MasterMindGuesser extends StatelessWidget {
             OutlinedButton(
               child: const Text('Check Guess'),
               onPressed: () {
-                print('about to check the guess!!');
+                guesserCubit.checkGuesses();
               },
             ),
+
+            const Spacer(),
+
+            (state.possibleAnswers!=null&& state.possibleAnswers!.length<6) ?
+              Column(children: state.possibleAnswers!.map((e) => Answer(e),).toList() ):
+              const Spacer()
 
         ]);
 
