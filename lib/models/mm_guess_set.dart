@@ -7,23 +7,39 @@ import 'package:crypto/crypto.dart';
 
 
 class MasterMindGuessSet {
-  List<MasterMindColourSet> guesses;
-  List<MasterMindGuessResult> guessResults;
+  List<MasterMindColourSet>? _guesses;
+  List<MasterMindGuessResult>? _guessResults;
+
+  List<MasterMindColourSet> get guesses => _guesses!;
+  List<MasterMindGuessResult> get guessResults { 
+    var doctoredResults = _guessResults!;
+    for (var i = 0; i < _guesses!.length - doctoredResults.length; i++) {
+        doctoredResults.add(MasterMindGuessResult());
+    }
+    return doctoredResults;
+  }
+
   MasterMindGuessSet({
     guesses,
     guessResults,
-  }) : guesses = guesses ?? [],
-       guessResults = guessResults ?? [];
+  }) {
+    _guesses = guesses ?? [];
+    _guessResults = guessResults ?? [];
+  }
 
-  /// set the guessResults property to no matches, for all of the guesses 
-  initGuessResultsToBlank() {
-    guessResults = List.filled( guesses.length, MasterMindGuessResult() );
+  addGuess( MasterMindColourSet guess ) {
+    _guesses!.add(guess);
+  }
+
+  addGuessAndGuessResult( { required MasterMindColourSet guess, required MasterMindGuessResult guessResult } ) {
+    _guesses!.add(guess);
+    _guessResults!.add(guessResult);
   }
 
   String guessesString() {
     var string = '';
-    for (var i=0; i<guesses.length; i++) {
-      string += "  Guess $i : ${guesses[i]} -- ${guessResults[i]} \n";
+    for (var i=0; i<_guesses!.length; i++) {
+      string += "  Guess $i : ${_guesses![i]} -- ${_guessResults![i]} \n";
     }
     return string;
   }

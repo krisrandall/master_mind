@@ -12,8 +12,6 @@ class MasterMindAi {
   static List<MasterMindColourSet> fetchAllMatchingAnswers( MasterMindGuessSet guessSet ) {
 
     const quitOutAt = 10000000000;
-
-    var hashOfGuessSet = guessSet.uniqueHashOfGuesses();
     List<MasterMindColourSet> matchingAnswers = [];
 
     // Loop through every possible answer
@@ -24,6 +22,7 @@ class MasterMindAi {
           for (var c4=0; c4<MMCols.values.length; c4++) {
             for (var c5=0; c5<MMCols.values.length; c5++) {
 
+              var allRed = false;
               var answerToTry = MasterMindColourSet([
                 MMCols.values[c1],
                 MMCols.values[c2],
@@ -32,16 +31,82 @@ class MasterMindAi {
                 MMCols.values[c5],
               ]);
 
+             // print('trying $c1 $c2 $c3 $c4 $c5');
+
               var game = MasterMindGameState();
               game.setAnswer(answerToTry);
 
+              if (
+                (MMCols.values[c1]==MMCols.red) &&
+                (MMCols.values[c2]==MMCols.red) &&
+                (MMCols.values[c3]==MMCols.red) &&
+                (MMCols.values[c4]==MMCols.red) &&
+                (MMCols.values[c5]==MMCols.red) 
+              ) {
+                allRed = true;
+                print('ALL RED!!    NB: ${game.guessSet.guesses.length} vs ${guessSet.guesses.length}');
+              }
+
+
               for (var i=0; i<guessSet.guesses.length; i++) {
-                game.makeGuess(guessSet.guesses[i]);
+                if (allRed) print(' .. $i ..');
+                var res = game.makeGuess(guessSet.guesses[i]);
+                if (allRed) print(res);
+              }
+
+              if (allRed) print('       NOWB: ${game.guessSet.guesses.length} vs ${guessSet.guesses.length}');
+              if (c1==0 && c2==0 && c3==0 && c4==0 && c5==0) {
+                print(' First run :${game.guessSet.guesses.length} vs ${guessSet.guesses.length}');
               }
 
               // Do the guess results for this answer match the guess results we passed in?
-              var guessHash = game.uniqueHashOfGuesses();
-              if (guessHash == hashOfGuessSet) {
+              // Hard coded to 5 pegs, and 6 guesses (max)
+              if ( 
+                (game.guessSet.guessResults[0].rightInRightSpot == guessSet.guessResults[0].rightInRightSpot) &&
+                (game.guessSet.guessResults[1].rightInRightSpot == guessSet.guessResults[1].rightInRightSpot) &&
+                (game.guessSet.guessResults[2].rightInRightSpot == guessSet.guessResults[2].rightInRightSpot) &&
+                (game.guessSet.guessResults[3].rightInRightSpot == guessSet.guessResults[3].rightInRightSpot) &&
+                (game.guessSet.guessResults[4].rightInRightSpot == guessSet.guessResults[4].rightInRightSpot) &&
+                (game.guessSet.guessResults[5].rightInWrongSpot == guessSet.guessResults[5].rightInWrongSpot) 
+                &&
+                (game.guessSet.guesses[0].cols[0] == guessSet.guesses[0].cols[0]) &&
+                (game.guessSet.guesses[1].cols[0] == guessSet.guesses[1].cols[0]) &&
+                (game.guessSet.guesses[2].cols[0] == guessSet.guesses[2].cols[0]) &&
+                (game.guessSet.guesses[3].cols[0] == guessSet.guesses[3].cols[0]) &&
+                (game.guessSet.guesses[4].cols[0] == guessSet.guesses[4].cols[0]) &&
+                (game.guessSet.guesses[5].cols[0] == guessSet.guesses[5].cols[0]) &&
+
+                (game.guessSet.guesses[0].cols[1] == guessSet.guesses[0].cols[1]) &&
+                (game.guessSet.guesses[1].cols[1] == guessSet.guesses[1].cols[1]) &&
+                (game.guessSet.guesses[2].cols[1] == guessSet.guesses[2].cols[1]) &&
+                (game.guessSet.guesses[3].cols[1] == guessSet.guesses[3].cols[1]) &&
+                (game.guessSet.guesses[4].cols[1] == guessSet.guesses[4].cols[1]) &&
+                (game.guessSet.guesses[5].cols[1] == guessSet.guesses[5].cols[1]) &&
+
+                (game.guessSet.guesses[0].cols[2] == guessSet.guesses[0].cols[2]) &&
+                (game.guessSet.guesses[1].cols[2] == guessSet.guesses[1].cols[2]) &&
+                (game.guessSet.guesses[2].cols[2] == guessSet.guesses[2].cols[2]) &&
+                (game.guessSet.guesses[3].cols[2] == guessSet.guesses[3].cols[2]) &&
+                (game.guessSet.guesses[4].cols[2] == guessSet.guesses[4].cols[2]) &&
+                (game.guessSet.guesses[5].cols[2] == guessSet.guesses[5].cols[2]) &&
+
+                (game.guessSet.guesses[0].cols[3] == guessSet.guesses[0].cols[3]) &&
+                (game.guessSet.guesses[1].cols[3] == guessSet.guesses[1].cols[3]) &&
+                (game.guessSet.guesses[2].cols[3] == guessSet.guesses[2].cols[3]) &&
+                (game.guessSet.guesses[3].cols[3] == guessSet.guesses[3].cols[3]) &&
+                (game.guessSet.guesses[4].cols[3] == guessSet.guesses[4].cols[3]) &&
+                (game.guessSet.guesses[5].cols[3] == guessSet.guesses[5].cols[3]) &&
+
+                (game.guessSet.guesses[0].cols[4] == guessSet.guesses[0].cols[4]) &&
+                (game.guessSet.guesses[1].cols[4] == guessSet.guesses[1].cols[4]) &&
+                (game.guessSet.guesses[2].cols[4] == guessSet.guesses[2].cols[4]) &&
+                (game.guessSet.guesses[3].cols[4] == guessSet.guesses[3].cols[4]) &&
+                (game.guessSet.guesses[4].cols[4] == guessSet.guesses[4].cols[4]) &&
+                (game.guessSet.guesses[5].cols[4] == guessSet.guesses[5].cols[4]) 
+
+              ){
+              //if (guessHash == hashOfGuessSet) {
+                print('A MATCH !!!!!   NB: ${game.guessSet.guessResults.length} vs ${guessSet.guessResults.length}');
                 matchingAnswers.add(game.answer!);
               }
 

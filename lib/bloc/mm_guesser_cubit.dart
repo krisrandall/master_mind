@@ -55,18 +55,16 @@ class GuesserCubit extends Cubit<GuesserState> {
     // wrap in future delayed to try to get the UI to update with the above emit
     Future.delayed(const Duration(milliseconds: 500), () {
 
-      if (state.guessSet.guessResults.isEmpty) { // clearly not the best spot to do it, but a hacky fix
-        state.guessSet.initGuessResultsToBlank();
-      }
-          
       Future<List<MasterMindColourSet>> fetchTheAnswers() async {
         return Future( () {
           MasterMindGuessSet? guessSet = MasterMindGuessSet();
 
           for (var i=0; i<state.guessSet.guesses.length; i++) {
             if (state.activeGuessRows![i]) {
-              guessSet.guesses.add( state.guessSet.guesses[i] );
-              guessSet.guessResults.add( state.guessSet.guessResults[i] );
+              guessSet.addGuessAndGuessResult( 
+                guess: state.guessSet.guesses[i],
+                guessResult: state.guessSet.guessResults[i] 
+              );
             }
           }
           // Now check for how many possible answers there are
@@ -99,10 +97,7 @@ class GuesserCubit extends Cubit<GuesserState> {
 
   togglePeg( int onWhichRow, GuessResultValue colourOfPegBeingToggled ) {
     var guessSet = state.guessSet;
-    // if we have not pegs (guessResults) then we are going to make some now 
-    if (guessSet.guessResults.isEmpty) {
-      guessSet.initGuessResultsToBlank();
-    }
+
     // click on empty peg to add in a RightInRight
     // click on a black (RightInRigtht) to add RightInWrong and remove RightInRight
     // click on a white (RightInWrong) to reove a RightInWrong

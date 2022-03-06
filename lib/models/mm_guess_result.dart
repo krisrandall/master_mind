@@ -2,15 +2,18 @@
 import 'mm_num_slots.dart';
 
 class MasterMindGuessResult {
-  late int rightInWrongSpot;
-  late int rightInRightSpot;
+  int? _rightInWrongSpot;
+  int? _rightInRightSpot;
+
+  int get rightInRightSpot => _rightInRightSpot!;
+  int get rightInWrongSpot => _rightInWrongSpot!;
 
   MasterMindGuessResult( { 
     rightInRight, 
     rightInWrong, 
   }) : assert ((rightInRight??0)+(rightInWrong??0) <= NUMBER_OF_COLOUR_SLOTS) {
-    rightInRightSpot = rightInRight ?? 0;
-    rightInWrongSpot = rightInWrong ?? 0;
+    _rightInRightSpot = rightInRight ?? 0;
+    _rightInWrongSpot = rightInWrong ?? 0;
   }
 
   // factory constructor that returns a new instance 

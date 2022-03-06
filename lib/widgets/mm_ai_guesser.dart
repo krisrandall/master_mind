@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/mm_guesser_cubit.dart';
-import '../models/mm_guess_result.dart';
 import 'answer.dart';
 import 'guess.dart';
 import 'guess_result.dart';
@@ -12,7 +11,6 @@ import 'instructions.dart';
 
 class MasterMindGuesser extends StatelessWidget {
   const MasterMindGuesser({Key? key}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -49,20 +47,12 @@ class MasterMindGuesser extends StatelessWidget {
                 flex: 3,
                 child: 
                     (state.activeGuessRows![i]==true) ?
-                      (state.guessSet.guessResults.asMap().containsKey(i)) ?  
                         GuessResult(
                           guess: state.guessSet.guessResults[i], 
                           onTap: (GuessResultValue g) {
                             guesserCubit.togglePeg(i, g);
                           },
                         ) : 
-                        GuessResult(
-                          guess: MasterMindGuessResult(),
-                          onTap: (GuessResultValue g) {
-                            if (g!=GuessResultValue.none) throw("what!?!  - how can a blank guess result value be anything other than none?!? - this is just a totally random code intergrity check");
-                            guesserCubit.togglePeg(i, GuessResultValue.none);
-                          },
-                        ) :
                       const Text('-'),
               ),
               const Spacer( flex: 1 ),
@@ -106,7 +96,7 @@ class MasterMindGuesser extends StatelessWidget {
 
             const Spacer(),
 
-            (state.possibleAnswers!=null&& state.possibleAnswers!.length<6) ?
+            (state.possibleAnswers!=null&& state.possibleAnswers!.length<6 && state.possibleAnswers!.length>1) ?
               Column(children: state.possibleAnswers!.map((e) => Answer(e),).toList() ):
               const Spacer()
 

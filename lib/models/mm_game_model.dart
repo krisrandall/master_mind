@@ -14,10 +14,9 @@ class MasterMindGameState {
 
   makeGuess( MasterMindColourSet _guess ) {
     if (answer==null) throw("No answer set, call setAnswer before calling makeGuess");
-    guessSet.guesses.add( _guess );
     // now check the guess
     MasterMindGuessResult result = _checkGuess( guess: _guess, answer: answer! );
-    guessSet.guessResults.add( result );
+    guessSet.addGuessAndGuessResult(guess: _guess, guessResult: result);
     return result;
   }
 
@@ -25,16 +24,29 @@ class MasterMindGameState {
     required MasterMindColourSet guess, 
     required MasterMindColourSet answer 
   } ) {
+    var allred = false;
+    if ( (answer.cols[0]==MMCols.red ) &&
+    (answer.cols[1]==MMCols.red ) &&
+    (answer.cols[2]==MMCols.red ) &&
+    (answer.cols[3]==MMCols.red ) &&
+    (answer.cols[4]==MMCols.red )  )
+    {
+      allred = true;
+    }
+    if (allred) {
+      print(' -- Testing $guess against $answer -- ');
+    }
+
     MasterMindGuessResult result = MasterMindGuessResult();
     List<bool> usedPositions = List.filled(NUMBER_OF_COLOUR_SLOTS, false);
-    for (var a=0; a<answer.cols.length; a++) {
+    for (var g=0; g<guess.cols.length; g++) {
       //print(' Answer ($a)(${answer.cols[a]}');
-      if (guess.cols[a]==answer.cols[a]) {
+      if (guess.cols[g]==answer.cols[g] ) {
         result = MasterMindGuessResult.addRightInRight(result);
-        usedPositions[a] = true;
+        usedPositions[g] = true;
       } else {
         var gotOneRightInWrong = false;
-        for (var g=0; g<guess.cols.length; g++) {
+          for (var a=0; a<answer.cols.length; a++) {
           //print('      , Guess ($g)(${guess.cols[g]}) , Used ($g)(${usedPositions[g]}) ');
           if (!usedPositions[g]) {
             if (answer.cols[a]==guess.cols[g]) {
